@@ -1,0 +1,82 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Distribution / packaging
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+develop-eggs/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+pip-wheel-metadata/
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# VSCode
+.vscode/
+
+# mypy
+.mypy_cache/
+
+# coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# logs
+*.log
+
+# dotenv
+.env
+
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Spyder
+.spyderproject
+.spyproject
+
+# PyCharm
+.idea/
+
+langchain
