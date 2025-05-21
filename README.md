@@ -1,6 +1,7 @@
 <!-- Cover Page -->
 <div style="text-align: center;">
-    <img src="images/image1.jpeg" alt="University Logo" width="200"/>
+    <img src="logos/image1.jpeg" alt="University Logo" width="200"/>
+    <img src="logos/image2.jpeg" alt="Faculty Logo" width="200"/>
     <h1 style="font-size: 18px; margin-top: 20px;">Faculty of Computers and Information-Arish University</h1>
 </div>
 
@@ -32,7 +33,8 @@
 
 <!-- Repeated Cover Page -->
 <div style="text-align: center;">
-    <img src="images/image1.jpeg" alt="University Logo" width="200"/>
+    <img src="logos/image1.jpeg" alt="University Logo" width="200"/>
+    <img src="logos/image2.jpeg" alt="Faculty Logo" width="200"/>
     <h1 style="font-size: 18px; margin-top: 20px;">Faculty of Computers and Information-Arish University</h1>
 </div>
 
@@ -141,9 +143,11 @@ SQL             Structured Query Language
 
 ## 1.1 Background
 
-In the era of big data, organizations are increasingly relying on sophisticated data platforms to extract valuable insights from vast amounts of information. These platforms integrate various technologies and methodologies to collect, process, store, and analyze data efficiently. The field of data science has evolved rapidly, with tools like Python, Pandas, NumPy, and Matplotlib becoming essential components in the data analyst's toolkit.
+In today's data-driven world, organizations face the challenge of extracting meaningful insights from vast amounts of information. Data platforms have emerged as essential tools for businesses seeking to leverage their data assets effectively. These platforms provide a structured approach to collecting, processing, storing, and analyzing data, enabling organizations to make informed decisions and gain competitive advantages.
 
-Data platforms serve as the foundation for modern analytics, enabling organizations to make data-driven decisions and gain competitive advantages. They provide a structured approach to handling data throughout its lifecycle, from ingestion to visualization and reporting. The integration of these platforms with business processes has become crucial for organizations seeking to leverage their data assets effectively.
+The field of data science continues to evolve rapidly, with technologies like Python, Pandas, NumPy, and Matplotlib becoming standard tools for data professionals. These technologies, combined with distributed processing frameworks like Apache Spark, form the foundation of modern data platforms that can handle the scale and complexity of today's data challenges.
+
+Data platforms serve as the backbone of an organization's analytics capabilities, providing a centralized infrastructure for data management and analysis. They enable data scientists and analysts to focus on extracting insights rather than dealing with the complexities of data infrastructure, thereby accelerating the time-to-value for data initiatives.
 
 ## 1.2 Project Aims and Objectives
 
@@ -327,114 +331,36 @@ The implementation of the data platform leverages Python as the primary programm
 
 ### 3.2.1 Data Ingestion Implementation
 
-The data ingestion component was implemented using a factory pattern that creates appropriate connector objects based on the data source type. Each connector implements a common interface with methods for:
-
-```python
-# Example connector interface
-class DataConnector:
-    def connect(self, connection_params):
-        """Establish connection to the data source"""
-        pass
-        
-    def extract_data(self, query_params):
-        """Extract data based on query parameters"""
-        pass
-        
-    def get_metadata(self):
-        """Retrieve metadata about the data source"""
-        pass
-```
+The data ingestion component was implemented using a factory pattern that creates appropriate connector objects based on the data source type. Each connector implements a common interface with methods for establishing connections, extracting data, and retrieving metadata.
 
 Specialized connectors were implemented for:
-- Relational databases (using SQLAlchemy)
-- CSV files (using Pandas read_csv)
-- JSON documents (using Python's json module)
-- REST APIs (using requests library)
+- Relational databases
+- CSV files
+- JSON documents
+- REST APIs
+
+This approach provides a consistent interface for data extraction while accommodating the unique characteristics of each data source.
 
 ### 3.2.2 Data Transformation Pipeline
 
-The transformation pipeline was implemented as a sequence of composable operations that can be chained together to form complex data preparation workflows:
+The transformation pipeline was implemented as a sequence of composable operations that can be chained together to form complex data preparation workflows. This approach provides flexibility in defining transformation sequences while maintaining clarity and testability.
 
-```python
-# Example transformation pipeline
-def create_transformation_pipeline(operations):
-    """Create a pipeline from a list of transformation operations"""
-    def pipeline(data):
-        result = data.copy()
-        for operation in operations:
-            result = operation(result)
-        return result
-    return pipeline
-
-# Example usage
-pipeline = create_transformation_pipeline([
-    remove_duplicates,
-    fill_missing_values,
-    normalize_columns(['age', 'income']),
-    create_date_features('transaction_date')
-])
-
-transformed_data = pipeline(raw_data)
-```
-
-This approach provides flexibility in defining transformation sequences while maintaining clarity and testability.
+Common transformation operations include:
+- Removing duplicate records
+- Handling missing values
+- Normalizing numerical columns
+- Creating derived features
+- Filtering outliers
 
 ### 3.2.3 Distributed Processing with Spark
 
-For large-scale data processing tasks, Apache Spark was integrated through PySpark. The implementation includes wrapper classes that provide a consistent interface regardless of whether processing is performed locally or distributed:
-
-```python
-# Example distributed processing implementation
-class DataProcessor:
-    def __init__(self, use_spark=False):
-        self.use_spark = use_spark
-        
-    def process_dataset(self, dataset, transformation_func):
-        if self.use_spark:
-            # Initialize Spark context if not already done
-            if not hasattr(self, 'spark'):
-                self.spark = SparkSession.builder.appName("DataPlatform").getOrCreate()
-            
-            # Convert to Spark DataFrame and process
-            spark_df = self.spark.createDataFrame(dataset)
-            result = transformation_func(spark_df)
-            return result.toPandas()
-        else:
-            # Process using pandas directly
-            return transformation_func(dataset)
-```
+For large-scale data processing tasks, Apache Spark was integrated through PySpark. The implementation includes wrapper classes that provide a consistent interface regardless of whether processing is performed locally or distributed.
 
 This abstraction allows the system to scale up to larger datasets by simply enabling Spark processing without changing the transformation logic.
 
 ### 3.2.4 Visualization Components
 
-The visualization library builds on Matplotlib to provide high-level functions for common chart types while ensuring consistent styling:
-
-```python
-# Example visualization component
-class DataVisualizer:
-    def __init__(self, theme='default'):
-        self.theme = theme
-        self._apply_theme()
-        
-    def _apply_theme(self):
-        if self.theme == 'default':
-            plt.style.use('seaborn-whitegrid')
-        elif self.theme == 'dark':
-            plt.style.use('dark_background')
-        
-    def create_time_series_plot(self, data, x_column, y_column, title=None):
-        fig, ax = plt.subplots(figsize=(10, 6))
-        data.plot(x=x_column, y=y_column, ax=ax)
-        
-        if title:
-            ax.set_title(title)
-            
-        ax.set_xlabel(x_column)
-        ax.set_ylabel(y_column)
-        
-        return fig
-```
+The visualization library builds on Matplotlib to provide high-level functions for common chart types while ensuring consistent styling. This approach simplifies the creation of visualizations while maintaining flexibility for customization.
 
 ## 3.3 Testing and Validation
 
@@ -442,47 +368,11 @@ A comprehensive testing strategy was implemented to ensure the reliability and c
 
 ### 3.3.1 Unit Testing
 
-Unit tests were developed for individual components using the pytest framework. These tests verify that each component functions correctly in isolation:
-
-```python
-# Example unit test for data connector
-def test_csv_connector_extract():
-    # Arrange
-    connector = CSVConnector()
-    connector.connect({'file_path': 'test_data.csv'})
-    
-    # Act
-    data = connector.extract_data()
-    
-    # Assert
-    assert not data.empty
-    assert 'id' in data.columns
-    assert len(data) == 100  # Expected number of rows
-```
+Unit tests were developed for individual components to verify that each component functions correctly in isolation. These tests focus on validating the behavior of specific functions and classes under various conditions.
 
 ### 3.3.2 Integration Testing
 
-Integration tests verify that components work together correctly:
-
-```python
-# Example integration test
-def test_end_to_end_pipeline():
-    # Arrange
-    connector = CSVConnector()
-    connector.connect({'file_path': 'test_data.csv'})
-    
-    transformer = DataTransformer()
-    analyzer = DataAnalyzer()
-    
-    # Act
-    raw_data = connector.extract_data()
-    transformed_data = transformer.transform(raw_data)
-    analysis_results = analyzer.analyze(transformed_data)
-    
-    # Assert
-    assert 'summary_statistics' in analysis_results
-    assert 'correlation_matrix' in analysis_results
-```
+Integration tests verify that components work together correctly, focusing on the interactions between different parts of the system. These tests ensure that data flows correctly through the pipeline and that components communicate effectively.
 
 ### 3.3.3 Performance Testing
 
@@ -549,7 +439,7 @@ Several promising directions for future work have been identified:
 
 1. **Stream Processing Integration**: Extend the platform to support real-time data streams using technologies like Apache Kafka and Spark Streaming.
 
-2. **Interactive Visualizations**: Integrate web-based visualization libraries such as Plotly or D3.js to create more interactive and engaging data presentations.
+2. **Interactive Visualizations**: Integrate web-based visualization libraries to create more interactive and engaging data presentations.
 
 3. **Automated Machine Learning**: Implement AutoML capabilities to automatically select and tune models based on dataset characteristics and analysis goals.
 
